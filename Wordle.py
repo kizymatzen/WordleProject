@@ -22,7 +22,7 @@ def wordle():
     random_word = random.choice(FIVE_LETTER_WORDS)
 
     # display the random_word in the first row
-    for col, letter in enumerate(secret_word):
+    for col, letter in enumerate(random_word):
         gw.set_square_letter(0, col, letter) 
 
     # set up the enter key listener
