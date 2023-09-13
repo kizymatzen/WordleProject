@@ -18,6 +18,15 @@ def wordle():
     gw = WordleGWindow()
     gw.add_enter_listener(enter_action)
 
+    row = 0
+    clm = 0
+    rand_word = random.choice(FIVE_LETTER_WORDS)
+    for index in range(0,5):
+        letter = rand_word[index]
+        gw.set_square_letter(row, clm, letter)
+        clm += 1
+
+
 # Startup code
 
 if __name__ == "__main__":
