@@ -12,21 +12,30 @@ from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
 
 def wordle():
 
-    def enter_action(s):
-        gw.show_message("You have to implement this method.")
-
     # create the game window
-    gw = WordleGWindow()
+    gw = WordleGWindow() 
 
-    # pick a random word from the provided list
+     # pick a random word from FIVE_LETTER_WORDS
     random_word = random.choice(FIVE_LETTER_WORDS)
 
     # display the random_word in the first row
-    for col, letter in enumerate(random_word):
-        gw.set_square_letter(0, col, letter) 
+    for col in range(N_COLS):
+        gw.set_square_letter(0, col, random_word[col])
+
+    def enter_action(s):
+        # collect the word from the graphics window
+        word = "".join([gw.get_square_letter(0, col) for col in range(N_COLS)])
+
+        # check if the word is in the dictionary
+        if word in FIVE_LETTER_WORDS:
+            gw.show_message("Great job! That's a valid word.")
+        else:
+            gw.show_message("Not in word list.")
+
 
     # set up the enter key listener
     gw.add_enter_listener(enter_action)
+    #
 
     # row = 0
     # clm = 0
