@@ -14,7 +14,7 @@ def wordle():
 
     # create the game window
     gw = WordleGWindow() 
-    
+
      # pick a random word from FIVE_LETTER_WORDS
     random_word = random.choice(FIVE_LETTER_WORDS)
 
@@ -35,6 +35,7 @@ def wordle():
 
     # set up the enter key listener
     gw.add_enter_listener(enter_action)
+    #
 
     # row = 0
     # clm = 0
