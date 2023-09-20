@@ -831,5 +831,5 @@ FIVE_LETTER_WORDS = [
     "zines", "zings", "zingy", "zippy", "zitis", "zlote", "zloty",
     "zoaea", "zoeae", "zoeas", "zombi", "zonal", "zoned", "zoner",
     "zones", "zonks", "zooey", "zooid", "zooks", "zooms", "zoons",
-    "zoril", "zowie", "zymes", "brock"
+    "zoril", "zowie", "zymes", "brock", "marla"
 ]
