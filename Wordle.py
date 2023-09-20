@@ -14,7 +14,7 @@ from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
 def wordle():
     # create the game window
     gw = WordleGWindow()
-    # this is a test
+
     # pick a random word from FIVE_LETTER_WORDS
     random_word = random.choice(FIVE_LETTER_WORDS)
 
