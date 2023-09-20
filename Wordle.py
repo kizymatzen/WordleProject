@@ -16,15 +16,13 @@ def wordle():
     gw = WordleGWindow() 
 
      # pick a random word from FIVE_LETTER_WORDS
-    random_word = random.choice(FIVE_LETTER_WORDS)
+    winning_word = random.choice(FIVE_LETTER_WORDS)
 
     # display the random_word in the first row
     # for col in range(N_COLS):
     #     gw.set_square_letter(0, col, random_word[col])
 
     def enter_action(s):
-
-        print(gw.get_current_row())
 
         current_row = gw.get_current_row()
 
@@ -33,10 +31,17 @@ def wordle():
 
         # check if the word is in the dictionary
         if word in FIVE_LETTER_WORDS:
-            gw.show_message("Great job! That's a valid word.")
-            gw.set_current_row(current_row + 1)
+            # if the correct word was guessed, alert the user that they won
+            if word == winning_word:
+                gw.show_message("You win!")
+                gw.set_current_row(7)
+            else:
+                gw.show_message("Great job! That's a valid word.")
+                # increment the row if they user typed in a valid word
+                gw.set_current_row(current_row + 1)
         else:
             gw.show_message("Not in word list.")
+        
 
 
     # set up the enter key listener
