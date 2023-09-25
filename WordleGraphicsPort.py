@@ -44,7 +44,7 @@ KEY_YSEP = 7
 KEY_LABELS = [
     [ "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P" ],
     [ "A", "S", "D", "F", "G", "H", "J", "K", "L" ],
-    [ "ENTER", "Z", "X", "C", "V", "B", "N", "M", "DELETE" ]
+    [ "ENTER", "Z", "X", "C", "Ç", "V", "B", "N", "M", "DELETE" ]
 ]
 
 CLICK_MAX_DISTANCE = 2
