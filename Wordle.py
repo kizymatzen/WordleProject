@@ -53,11 +53,14 @@ def is_valid_word(word):
 
 
 def color_word_row(word, winning_word, row, gw):
+    highlighted_letters = set()
+
     for index, letter in enumerate(word):
         if letter == winning_word[index]:
             gw.set_square_color(row, index, CORRECT_COLOR)
-        elif letter in winning_word:
+        elif letter in winning_word and letter not in highlighted_letters:
             gw.set_square_color(row, index, PRESENT_COLOR)
+            highlighted_letters.add(letter)
         else:
             gw.set_square_color(row, index, MISSING_COLOR)
 
