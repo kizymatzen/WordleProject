@@ -326,3 +326,20 @@ class WordleMessage:
     def set_text(self, text, color="Black"):
         self._text = text
         self._canvas.itemconfigure(self._msg, text=text, fill=color)
+
+
+def get_current_word(gw, row):
+    return "".join([gw.get_square_letter(row, col) for col in range(N_COLS)]).lower()
+
+
+def color_word_row(word, winning_word, row, gw):
+    highlighted_letters = set()
+
+    for index, letter in enumerate(word):
+        if letter == winning_word[index]:
+            gw.set_square_color(row, index, CORRECT_COLOR)
+        elif letter in winning_word and letter not in highlighted_letters:
+            gw.set_square_color(row, index, PRESENT_COLOR)
+            highlighted_letters.add(letter)
+        else:
+            gw.set_square_color(row, index, MISSING_COLOR)

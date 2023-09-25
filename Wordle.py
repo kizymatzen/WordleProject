@@ -9,83 +9,91 @@ import random
 from tkinter import *
 from WordleDictionary import FIVE_LETTER_WORDS
 from WordleDictionaryPort import FIVE_LETTER_WORDS_PORT
-from WordleGraphics import WordleGWindow as EnglishWordle, N_COLS, N_ROWS
+from WordleGraphics import (
+    WordleGWindow as EnglishWordle,
+    N_COLS,
+    N_ROWS,
+    CORRECT_COLOR,
+    PRESENT_COLOR,
+    MISSING_COLOR,
+    get_current_word,
+    color_word_row,
+)
 from WordleGraphicsPort import WordleGWindow as PortugueseWordle, N_COLS, N_ROWS
 
 
 def wordle():
-    # English wordle version
     def show():
         if clicked.get() == "English":
             gw = EnglishWordle()
-
-            guess_count = 0  # initialize the guess count
-
-            # pick a random word from FIVE_LETTER_WORDS
-            random_word = random.choice(FIVE_LETTER_WORDS)
-
-            # display the random_word in the first row
-            for col in range(N_COLS):
-                gw.set_square_letter(0, col, random_word[col])
+            winning_word = random.choice(FIVE_LETTER_WORDS)
+            print(winning_word)
+            total_guesses = 6
 
             def enter_action(s):
-                nonlocal guess_count  # allow modification of the guess count
-                # print(gw.get_current_row())
+                nonlocal total_guesses
 
                 current_row = gw.get_current_row()
 
-                # collect the word from the graphics window
-                word = "".join(
-                    [gw.get_square_letter(current_row, col) for col in range(N_COLS)]
-                ).lower()
+                word = get_current_word(gw, current_row)
 
-                # check if the word is in the dictionary
-                if word in FIVE_LETTER_WORDS:
-                    gw.show_message("Great job! That's a valid word.")
+                if is_valid_word(word):
+                    color_word_row(word, winning_word, current_row, gw)
+                    if word == winning_word:
+                        gw.show_message("You win!")
+                        gw.set_current_row(7)
+                    else:
+                        total_guesses -= 1
+                        gw.show_message(
+                            f"Great job that's a valid word! {total_guesses} guesses left!"
+                        )
+                        gw.set_current_row(current_row + 1)
                 else:
-                    gw.show_message("Not in word list.")
+                    gw.show_message(
+                        f"Not in word list. Only {total_guesses} guesses left!"
+                    )
 
-                gw.set_current_row(current_row + 1)  # move to the next row
-                guess_count += 1  # increment guess count
+            def is_valid_word(word):
+                return word in FIVE_LETTER_WORDS
 
-            # set up the enter key listener
             gw.add_enter_listener(enter_action)
+
+        #  ----------------------- portuguese wordle version ----------------------------
 
         # Portuguese wordle version
         elif clicked.get() == "Portuguese":
-            gwp = PortugueseWordle()
-
-            guess_count = 0  # initialize the guess count
-
-            # pick a random word from FIVE_LETTER_WORDS
-            random_word = random.choice(FIVE_LETTER_WORDS_PORT)
-
-            # display the random_word in the first row
-            for col in range(N_COLS):
-                gwp.set_square_letter(0, col, random_word[col])
+            gw = PortugueseWordle()
+            winning_word = random.choice(FIVE_LETTER_WORDS_PORT)
+            print(winning_word)
+            total_guesses = 6
 
             def enter_action(s):
-                nonlocal guess_count  # allow modification of the guess count
-                # print(gw.get_current_row())
+                nonlocal total_guesses
 
-                current_row = gwp.get_current_row()
+                current_row = gw.get_current_row()
 
-                # collect the word from the graphics window
-                word = "".join(
-                    [gwp.get_square_letter(current_row, col) for col in range(N_COLS)]
-                ).lower()
+                word = get_current_word(gw, current_row)
 
-                # check if the word is in the dictionary
-                if word in FIVE_LETTER_WORDS:
-                    gwp.show_message("Great job! That's a valid word.")
+                if is_valid_word(word):
+                    color_word_row(word, winning_word, current_row, gw)
+                    if word == winning_word:
+                        gw.show_message("You win!")
+                        gw.set_current_row(7)
+                    else:
+                        total_guesses -= 1
+                        gw.show_message(
+                            f"Great job that's a valid word! {total_guesses} guesses left!"
+                        )
+                        gw.set_current_row(current_row + 1)
                 else:
-                    gwp.show_message("Not in word list.")
+                    gw.show_message(
+                        f"Not in word list. Only {total_guesses} guesses left!"
+                    )
 
-                gwp.set_current_row(current_row + 1)  # move to the next row
-                guess_count += 1  # increment guess count
+            def is_valid_word(word):
+                return word in FIVE_LETTER_WORDS_PORT
 
-            # set up the enter key listener
-            gwp.add_enter_listener(enter_action)
+            gw.add_enter_listener(enter_action)
 
     root = Tk()
     root.geometry("200x200")
@@ -105,3 +113,27 @@ def wordle():
 
 if __name__ == "__main__":
     wordle()
+
+
+#  ----------------------- helper functions ----------------------------
+
+
+def get_current_word(gw, row):
+    return "".join([gw.get_square_letter(row, col) for col in range(N_COLS)]).lower()
+
+
+def is_valid_word(word):
+    return word in FIVE_LETTER_WORDS
+
+
+def color_word_row(word, winning_word, row, gw):
+    highlighted_letters = set()
+
+    for index, letter in enumerate(word):
+        if letter == winning_word[index]:
+            gw.set_square_color(row, index, CORRECT_COLOR)
+        elif letter in winning_word and letter not in highlighted_letters:
+            gw.set_square_color(row, index, PRESENT_COLOR)
+            highlighted_letters.add(letter)
+        else:
+            gw.set_square_color(row, index, MISSING_COLOR)
