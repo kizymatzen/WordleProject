@@ -30,6 +30,9 @@ TOP_MARGIN = 30  # Top margin (pixels)
 BOTTOM_MARGIN = 30  # Bottom margin (pixels)
 MESSAGE_SEP = 20  # Space between board and message center
 
+secondary_color_scheme = True  # initializing the color scheme to light mode
+
+
 SQUARE_FONT = ("Helvetica Neue", -44, "bold")
 MESSAGE_FONT = ("Helvetica Neue", -20, "bold")
 KEY_FONT = ("Helvetica Neue", -18)
@@ -147,9 +150,37 @@ class WordleGWindow:
             """Starts the tkinter event loop when the program exits."""
             root.mainloop()
 
+        def toggle():
+            global CORRECT_COLOR
+            global PRESENT_COLOR
+            global MISSING_COLOR
+            global UNKNOWN_COLOR
+            global secondary_color_scheme
+            if secondary_color_scheme:
+                secondary_color_scheme = False
+                color_toggle.config(text="Click for Light Mode")
+                canvas.config(bg="Dark Grey")
+                CORRECT_COLOR = "#f5793a"
+                PRESENT_COLOR = "#85c0f9"
+                MISSING_COLOR = "#3a3a3c"
+                UNKNOWN_COLOR = "#a9a9a9"
+            else:
+                secondary_color_scheme = True
+                canvas.config(bg="White")
+                color_toggle.config(text="Click for Dark Mode")
+                CORRECT_COLOR = "#66BB66"
+                PRESENT_COLOR = "#CCBB66"
+                MISSING_COLOR = "#999999"
+                UNKNOWN_COLOR = "#FFFFFF"
+            self._grid = create_grid()
+
         root = tkinter.Tk()
         root.title("Wordle")
         root.protocol("WM_DELETE_WINDOW", delete_window)
+        color_toggle = tkinter.Button(
+            root, width=30, text="Click for Dark Mode", command=toggle
+        )
+        color_toggle.pack()
         self._root = root
         canvas = tkinter.Canvas(
             root,
@@ -159,6 +190,8 @@ class WordleGWindow:
             highlightthickness=0,
         )
         canvas.pack()
+        v = tkinter.Scrollbar(root)
+        v.pack(side="right", fill="y")
         self._canvas = canvas
         self._grid = create_grid()
         self._message = create_message()
